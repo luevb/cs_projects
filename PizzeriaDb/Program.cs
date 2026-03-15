@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using PizzeriaDb.Data;
 using PizzeriaDb.Enities;
 
@@ -19,6 +20,7 @@ namespace PizzeriaDb
                     db.Sizes.RemoveRange(db.Sizes);
                     db.Categories.RemoveRange(db.Categories);
                     db.SaveChanges();
+                    db.Database.ExecuteSqlRaw("DELETE FROM sqlite_sequence;");
                 }
                 db.SaveChanges();
                 var categories = AddCategories(db);
