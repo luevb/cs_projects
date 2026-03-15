@@ -11,6 +11,7 @@ namespace PizzeriaDb.Enities
         public string Name { get; set; }
         [Required]
         public int Diametr {  get; set; }
+        public ICollection<PizzaSize> PizzaSizes { get; set; }
 
     }
 }

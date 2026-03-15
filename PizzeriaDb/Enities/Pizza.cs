@@ -21,5 +21,7 @@ namespace PizzeriaDb.Enities
         [NotMapped]
         public string Description { get; set; }
 
+        public ICollection<PizzaSize> PizzaSizes { get; set; }
+
     }
 }

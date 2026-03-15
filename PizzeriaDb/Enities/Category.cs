@@ -8,7 +8,7 @@ namespace PizzeriaDb.Enities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Name { get; set; }
     }
 }
