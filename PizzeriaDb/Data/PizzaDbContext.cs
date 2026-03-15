@@ -9,6 +9,10 @@ namespace PizzeriaDb.Data
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<PizzaSize> PizzaSizes { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data source=pizzeria.db");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,9 +25,6 @@ namespace PizzeriaDb.Data
                 .HasIndex(p => new { p.Name, p.CategoryId });
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data source=pizzeria.db");
-        }
+       
     }
 }
