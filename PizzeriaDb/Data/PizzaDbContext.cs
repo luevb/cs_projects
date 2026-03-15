@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzeriaDb.Enities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PizzeriaDb.Data
 {
