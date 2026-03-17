@@ -8,7 +8,9 @@ namespace PizzeriaDb.Enities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Name { get; set; }
+        public ICollection<Pizza> Pizzas { get; set; }
+        public Category(string Name) { this.Name = Name; }
     }
 }

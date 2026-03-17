@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace PizzeriaDb.Enities
 {
@@ -21,7 +18,10 @@ namespace PizzeriaDb.Enities
 
         public Category Category { get; set; }
 
+        [NotMapped]
+        public string? Description { get; set; }
 
+        public ICollection<PizzaSize> PizzaSizes { get; set; }
 
     }
 }
