@@ -19,7 +19,7 @@ namespace PizzeriaDb.Enities
         public Category Category { get; set; }
 
         [NotMapped]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public ICollection<PizzaSize> PizzaSizes { get; set; }
 

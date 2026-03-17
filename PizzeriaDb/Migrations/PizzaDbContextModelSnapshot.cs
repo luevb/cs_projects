@@ -97,7 +97,7 @@ namespace PizzeriaDb.Migrations
             modelBuilder.Entity("PizzeriaDb.Enities.Pizza", b =>
                 {
                     b.HasOne("PizzeriaDb.Enities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Pizzas")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -108,13 +108,13 @@ namespace PizzeriaDb.Migrations
             modelBuilder.Entity("PizzeriaDb.Enities.PizzaSize", b =>
                 {
                     b.HasOne("PizzeriaDb.Enities.Pizza", "Pizza")
-                        .WithMany()
+                        .WithMany("PizzaSizes")
                         .HasForeignKey("PizzaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PizzeriaDb.Enities.Size", "Size")
-                        .WithMany()
+                        .WithMany("PizzaSizes")
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -122,6 +122,21 @@ namespace PizzeriaDb.Migrations
                     b.Navigation("Pizza");
 
                     b.Navigation("Size");
+                });
+
+            modelBuilder.Entity("PizzeriaDb.Enities.Category", b =>
+                {
+                    b.Navigation("Pizzas");
+                });
+
+            modelBuilder.Entity("PizzeriaDb.Enities.Pizza", b =>
+                {
+                    b.Navigation("PizzaSizes");
+                });
+
+            modelBuilder.Entity("PizzeriaDb.Enities.Size", b =>
+                {
+                    b.Navigation("PizzaSizes");
                 });
 #pragma warning restore 612, 618
         }

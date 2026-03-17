@@ -10,5 +10,7 @@ namespace PizzeriaDb.Enities
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+        public ICollection<Pizza> Pizzas { get; set; }
+        public Category(string Name) { this.Name = Name; }
     }
 }
