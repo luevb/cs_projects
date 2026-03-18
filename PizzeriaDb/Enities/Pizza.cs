@@ -17,9 +17,8 @@ namespace PizzeriaDb.Enities
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
-
-        [NotMapped]
-        public string? Description { get; set; }
+        [Required]
+        public string Description { get; set; }
 
         public ICollection<PizzaSize> PizzaSizes { get; set; }
 

@@ -6,6 +6,7 @@ namespace PizzeriaDb
 {
     public class Program
     {
+
         static void Main(string[] args)
         {
             using (var db = new PizzaDbContext())
@@ -21,15 +22,50 @@ namespace PizzeriaDb
 
                     Console.WriteLine("Готово!");
                 }
-                else
+                while (true)
                 {
-                    Console.WriteLine("База уже заполнена");
-                    Console.WriteLine($"Категорий: {db.Categories.Count()}");
-                    Console.WriteLine($"Пицц: {db.Pizzas.Count()}");
-                    Console.WriteLine($"Размеров: {db.Sizes.Count()}");
-                    Console.WriteLine($"Цен: {db.PizzaSizes.Count()}");
+                    Console.WriteLine("Добро пожаловать в пиццерию. Здесь вы можете ознакомиться с меню.");
+                    Console.WriteLine("1. Показать меню");
+                    Console.WriteLine("2. Показать статистику");
+                    Console.WriteLine("3. Выход из приложения");
+                    Console.Write("Выберите: ");
+                    string choice = Console.ReadLine();
+                    Console.WriteLine();
+                    switch (choice)
+                    {
+                        case "1":
+                            ShowMenu(db);
+                            return;
+                        case "2":
+                            Console.WriteLine("");
+                            Console.WriteLine($"Количество категорий - {db.Categories.Count()}");
+                            Console.WriteLine($"Количество пицц - {db.Pizzas.Count()}");
+                            Console.WriteLine($"Количество размеров - {db.Sizes.Count()}");
+                            return;
+                        case"3":
+                            Console.WriteLine("До свидания. Выход...");
+                            return;
+                        default:
+                            Console.WriteLine("Неправильно набран номер! Попробуйте еще раз.");
+                            break;
+                    }
                 }
             }
+        }
+
+        static void ShowMenu( PizzaDbContext db)
+        {
+            var pizza = db.Pizzas.Include(p => p.Category).Include(p => p.PizzaSizes).ThenInclude(ps => ps.Size).ToList();
+            Console.WriteLine("***Menu***");
+            foreach(var p in pizza)
+            {
+                Console.WriteLine($"- Пицца {p.Name}, категория: {p.Category.Name}");
+                Console.WriteLine($"- Описание: {p.Description}");
+                var price = p.PizzaSizes.Min(ps => ps.Price);
+                Console.WriteLine($"- Цена - {price}");
+                Console.WriteLine();
+            }
+            Console.WriteLine("*Цены указаны на маленький размер пиццы*");
         }
 
         static List<Category> AddCategories(PizzaDbContext db)
