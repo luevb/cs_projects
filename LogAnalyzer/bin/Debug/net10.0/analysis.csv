@@ -1,0 +1,5 @@
+﻿IP;EventType;Count
+192.168.0.12;error;241
+192.168.0.12;login;233
+192.168.0.12;logout;225
+192.168.0.12;purchase;251

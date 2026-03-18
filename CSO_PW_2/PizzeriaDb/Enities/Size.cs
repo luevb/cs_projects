@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PizzeriaDb.Enities
+{
+    public class Size
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public int Diametr {  get; set; }
+        public ICollection<PizzaSize> PizzaSizes { get; set; }
+        public Size(string Name, int Diametr) 
+        { 
+          this.Name = Name; 
+          this.Diametr = Diametr; 
+        }
+
+    }
+}
