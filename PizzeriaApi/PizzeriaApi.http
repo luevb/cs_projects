@@ -1,6 +1,6 @@
-@PizzeriaApi_HostAddress = http://localhost:5189
+@PizzeriaApi_HostAddress = http://localhost:5288
 
-GET {{PizzeriaApi_HostAddress}}/weatherforecast/
+GET {{PizzeriaApi_HostAddress}}/weathera/
 Accept: application/json
 
 ###
