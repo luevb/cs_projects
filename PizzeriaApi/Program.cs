@@ -1,34 +1,98 @@
+using Microsoft.EntityFrameworkCore;
+using PizzeriaApi.Data;
+using PizzeriaApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Конфигурация
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<PizzaDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+// Сервис
+builder.Services.AddScoped<IPizzaService, PizzaService>();
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.WriteIndented = true;  // ← Включаем отступы
+    options.SerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
+// Тестовые данные
+using (var scope = app.Services.CreateScope())
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var dbContext = scope.ServiceProvider.GetRequiredService<PizzaDbContext>();
+    DbInitializer.Initialize(dbContext);
+}
 
-app.MapGet("/weather", () =>
+// Endpoints
+
+// GET /api/pizzas - основной endpoint
+app.MapGet("/api/pizzas", async (IPizzaService pizzaService) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var pizzas = await pizzaService.GetPizzasWithMinPriceAsync();
+
+    // Форматируем результат
+    var result = pizzas.Select(p => new
+    {
+        p.Id,
+        p.Name,
+        p.Description,
+        Category = p.Category?.Name,
+        MinPrice = p.PizzaSizes.Any() ? p.PizzaSizes.Min(ps => ps.Price) : 0,
+        Sizes = p.PizzaSizes.Select(ps => new
+        {
+            Size = ps.Size?.Name,
+            Diameter = ps.Size?.Diametr,
+            ps.Price
+        })
+    });
+
+    return Results.Ok(result);
 });
 
-app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+// GET /api/config - endpoint для конфигурации
+app.MapGet("/api/config", (IConfiguration config) =>
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+    return Results.Ok(new
+    {
+        AppName = config["AppSettings:AppName"],
+        Version = config["AppSettings:Version"],
+        MaxItems = config.GetValue<int>("AppSettings:MaxItems")
+    });
+});
+
+// GET /api/pizzas/{id} - конкретная пицца
+app.MapGet("/api/pizzas/{id}", async (int id, PizzaDbContext db) =>
+{
+    var pizza = await db.Pizzas
+        .Include(p => p.Category)
+        .Include(p => p.PizzaSizes)
+            .ThenInclude(ps => ps.Size)
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (pizza == null)
+        return Results.NotFound(new { message = $"Пицца с id {id} не найдена" });
+
+    return Results.Ok(new
+    {
+        pizza.Id,
+        pizza.Name,
+        pizza.Description,
+        Category = pizza.Category?.Name,
+        Sizes = pizza.PizzaSizes.Select(ps => new
+        {
+            Size = ps.Size?.Name,
+            Diameter = ps.Size?.Diametr,
+            ps.Price
+        })
+    });
+});
+
+// Корневой endpoint для проверки
+app.MapGet("/", () => "Pizzeria API is running! Use /api/pizzas to get data \n" +
+"Use /api/config to get config \n" +
+"Use /api/pizzas/{id} to get the pizza information");
+
+app.Run();
