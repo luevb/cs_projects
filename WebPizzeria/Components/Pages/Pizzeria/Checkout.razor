@@ -1,0 +1,62 @@
+﻿@page "/checkout"
+@using WebPizzeria.Models
+@using WebPizzeria.Services
+@inject IOrderRepository OrderRepo
+@inject CartService Carta
+@inject NavigationManager Navigation
+
+<h3>📝 Оформление заказа</h3>
+
+<EditForm Model="@order" OnValidSubmit="SubmitOrder">
+    <div class="mb-3">
+        <label for="name">Ваше имя</label>
+        <InputText id="name" class="form-control" @bind-Value="order.CustomerName" />
+        <ValidationMessage For="@(() => order.CustomerName)" />
+    </div>
+    <div class="mb-3">
+        <label for="phone">Телефон</label>
+        <InputText id="phone" class="form-control" @bind-Value="order.Phone" />
+        <ValidationMessage For="@(() => order.Phone)" />
+    </div>
+    <div class="mb-3">
+        <label for="address">Адрес доставки</label>
+        <InputText id="address" class="form-control" @bind-Value="order.Address" />
+        <ValidationMessage For="@(() => order.Address)" />
+    </div>
+    
+    <h4>Ваш заказ</h4>
+    <table class="table table-sm">
+        @foreach (var item in Carta.Items)
+        {
+            <tr><td>@item.Name x @item.Quantity</td><td>@(item.Price* item.Quantity) ₽</td></tr>
+        }
+        <tr><th>Итого: @Carta.TotalPrice ₽</th></tr>
+    </table>
+    
+    <button type="submit" class="btn btn-primary">Подтвердить заказ</button>
+</EditForm>
+
+@code {
+    private Order order = new();
+    
+    private async Task SubmitOrder()
+    {
+        order.OrderDate = DateTime.Now;
+        order.TotalPrice = Carta.TotalPrice;
+        order.Status = "Pending";
+        
+        foreach (var item in Carta.Items)
+        {
+            order.OrderItems.Add(new OrderItem
+            {
+                PizzaId = item.PizzaId,
+                Quantity = item.Quantity,
+                UnitPrice = item.Price
+            });
+        }
+        
+        await OrderRepo.AddAsync(order);
+        Carta.Clear();
+        Navigation.NavigateTo("/order-success");
+    }
+}

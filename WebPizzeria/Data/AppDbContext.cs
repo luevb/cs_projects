@@ -15,6 +15,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        // Composite primary key for many-to-many
         modelBuilder.Entity<PizzaIngredient>()
             .HasKey(pi => new { pi.PizzaId, pi.IngredientId });
 
@@ -27,5 +30,12 @@ public class AppDbContext : DbContext
             .HasOne(pi => pi.Ingredient)
             .WithMany(i => i.PizzaIngredients)
             .HasForeignKey(pi => pi.IngredientId);
+
+        // Seed some pizzas
+        modelBuilder.Entity<Pizza>().HasData(
+            new Pizza { Id = 1, Name = "Маргарита", Description = "Томатный соус, моцарелла, базилик", Price = 450, Size = "Medium", IsVegetarian = true, ImageUrl = "/images/margherita.jpg" },
+            new Pizza { Id = 2, Name = "Пепперони", Description = "Пепперони, моцарелла, томатный соус", Price = 550, Size = "Medium", IsVegetarian = false, ImageUrl = "/images/pepperoni.jpg" },
+            new Pizza { Id = 3, Name = "Гавайская", Description = "Курица, ананас, моцарелла", Price = 600, Size = "Medium", IsVegetarian = false, ImageUrl = "/images/hawaiian.jpg" }
+        );
     }
 }

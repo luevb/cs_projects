@@ -1,0 +1,11 @@
+﻿@page "/testcart"
+@using WebPizzeria.Services
+@inject CartService Cart
+<button @onclick="AddTest">Добавить тестовую пиццу</button>
+<div>Количество в корзине: @Cart.TotalCount</div>
+@code {
+    void AddTest()
+    {
+        Cart.AddItem(999, "Тест", 100);
+    }
+}
