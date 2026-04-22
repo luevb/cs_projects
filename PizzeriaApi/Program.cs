@@ -9,11 +9,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<PizzaDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// Сервис
+// Сервисы
 builder.Services.AddScoped<IPizzaService, PizzaService>();
+// Для отступов
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
-    options.SerializerOptions.WriteIndented = true;  // ← Включаем отступы
+    options.SerializerOptions.WriteIndented = true;
     options.SerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 });
 
