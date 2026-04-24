@@ -1,4 +1,7 @@
 using BlazorPizzeria.Components;
+using BlazorPizzeria.Data;
+using BlazorPizzeria.Services;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddMudServices();
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<CartService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
