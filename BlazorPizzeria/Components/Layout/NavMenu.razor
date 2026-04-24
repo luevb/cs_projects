@@ -1,37 +1,55 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Пицца Дон🍕</a>
-    </div>
-</div>
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalPizza">
+        <b>Меню</b>
+    </MudNavLink>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+    <MudNavLink Href="/cart" Icon="@Icons.Material.Filled.ShoppingCartCheckout">
+        <b>Корзина</b>
+    </MudNavLink>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <BiShop Size="22"></BiShop> Меню
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="cart">
-                <BiCart2 Size="22"></BiCart2> Корзина
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="reciept">
-                <BiReceipt Size="22"></BiReceipt> Рецепты
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="support">
-                <BiPatchQuestion Size="22"></BiPatchQuestion> Поддержка
-            </NavLink>
-        </div>
-
-    </nav>
-</div>
-
+    <MudNavLink Href="/about" Icon="@Icons.Material.Filled.Info">
+        <b>О нас</b>
+    </MudNavLink>
+    @* Группа Рецепты *@
+    <MudNavGroup Title="Рецепты" Icon="@Icons.Material.Filled.Receipt" Expanded="false">
+        <MudNavLink Href="/reciept/margherita" Icon="@Icons.Material.Filled.Receipt">
+            Маргарита
+        </MudNavLink>
+        <MudNavLink Href="/reciept/cheese" Icon="@Icons.Material.Filled.Receipt">
+            Четыре сыра
+        </MudNavLink>
+        <MudNavLink Href="/reciept/seasons" Icon="@Icons.Material.Filled.Receipt">
+            Четыре сезона
+        </MudNavLink>
+        <MudNavLink Href="/reciept/capricciosa" Icon="@Icons.Material.Filled.Receipt">
+            Капричоза
+        </MudNavLink>
+        <MudNavLink Href="/reciept/diavola" Icon="@Icons.Material.Filled.Receipt">
+            Дьябола
+        </MudNavLink>
+        <MudNavLink Href="/reciept/hawaiian" Icon="@Icons.Material.Filled.Receipt">
+            Гавайская
+        </MudNavLink>
+        <MudNavLink Href="/reciept/vegetarian" Icon="@Icons.Material.Filled.Receipt">
+            Вегетарианская
+        </MudNavLink>
+        <MudNavLink Href="/reciept/calzone" Icon="@Icons.Material.Filled.Receipt">
+            Кальцоне
+        </MudNavLink>
+        <MudNavLink Href="/reciept/pizzaDon" Icon="@Icons.Material.Filled.Receipt">
+            Фирменная пицца «Пицца Дон»
+        </MudNavLink>
+        <MudNavLink Href="/reciept/parma" Icon="@Icons.Material.Filled.Receipt">
+            Пармская
+        </MudNavLink>
+    </MudNavGroup>
+    @* Группа Настройки *@
+    <MudNavGroup Title="Настройки" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+        <MudNavLink Href="/settings/profile" Icon="@Icons.Material.Filled.Person">
+            Профиль
+        </MudNavLink>
+        <MudNavLink Href="/settings/security" Icon="@Icons.Material.Filled.Security">
+            Безопасность
+        </MudNavLink>
+    </MudNavGroup>
+</MudNavMenu>

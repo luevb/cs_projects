@@ -64,3 +64,16 @@ h1:focus {
     line-height: 1.5;
     font-style: italic;
 }
+
+.text {
+    font-family: Consolas, sans-serif;
+}
+
+.menu {
+    font-family: 'Times New Roman';
+    font-weight: 700 
+}
+
+.mud-nav-group > .mud-nav-link > .mud-nav-link-text {
+    font-weight: 700;
+}
