@@ -32,7 +32,7 @@ using (var scope = app.Services.CreateScope())
 // GET /api/pizzas - основной endpoint
 app.MapGet("/api/pizzas", async (IPizzaService pizzaService) =>
 {
-    var pizzas = await pizzaService.GetPizzasWithMinPriceAsync();
+    var pizzas = await pizzaService.GetPizzasAsync();
 
     // Форматируем результат
     var result = pizzas.Select(p => new

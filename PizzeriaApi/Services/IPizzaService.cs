@@ -4,6 +4,6 @@ namespace PizzeriaApi.Services
 {
     public interface IPizzaService
     {
-        Task<List<Pizza>> GetPizzasWithMinPriceAsync();
+        Task<List<Pizza>> GetPizzasAsync();
     }
 }

@@ -13,7 +13,7 @@ namespace PizzeriaApi.Services
             _context = context;
         }
 
-        public async Task<List<Pizza>> GetPizzasWithMinPriceAsync()
+        public async Task<List<Pizza>> GetPizzasAsync()
         {
             var pizzas = await _context.Pizzas
                 .Include(p => p.Category)
