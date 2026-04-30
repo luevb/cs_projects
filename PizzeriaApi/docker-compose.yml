@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  pizzeria:
+    image: donfias/cso-pw-4:latest
+    container_name: pizzeria_api
+    ports:
+      - "8020:8080"
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
