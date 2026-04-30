@@ -1,0 +1,18 @@
+# ignore
+bin/
+obj/
+out/
+.vs/
+.vscode/
+*.suo
+*.user
+Dockerfile*
+docker-compose*
+.dockerignore
+*.md
+README*
+LICENSE
+.git/
+.gitignore
+.github/
+.azure-pipelines.yml
